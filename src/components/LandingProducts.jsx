@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAllProductAPI } from "../services/allAPI";
+import { getAllCategoryPublic, getAllProductAPI } from "../services/allAPI";
 import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 
@@ -9,14 +9,33 @@ const LandingProducts = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState("Categories");
   const [searchQuery, setSearchQuery] = useState("");
+  const [categories, setCategories] = useState([]);
 
-  // Pagination states
+
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 8; // Number of products per page
+  const itemsPerPage = 8; 
 
   useEffect(() => {
     getAllProducts();
   }, []);
+  useEffect(()=>{
+        getAllCategory()
+  },[])
+  const getAllCategory = async () => {
+     try {
+      const response = await getAllCategoryPublic();
+      if (response.status === 200 && Array.isArray(response.data)) {
+        setCategories(response.data);        
+        
+      } else {
+        console.log("Failed to load categories");
+      }
+    } catch (err) {
+      console.error("Error fetching categories:", err);
+    }
+   
+  };
+
 
   const getAllProducts = async () => {
     try {
@@ -25,6 +44,8 @@ const LandingProducts = () => {
         const products = result.data.allProductsList || [];
         setAllHomeProducts(products);
         setAllFilteredProducts(products);
+        console.log(products);
+        
       }
     } catch (err) {
       console.error("Error fetching products:", err);
@@ -64,7 +85,6 @@ const LandingProducts = () => {
     }
   };
 
-  // Pagination logic
   const pageCount = Math.ceil(allFilteredProducts.length / itemsPerPage);
   const offset = currentPage * itemsPerPage;
   const currentData = allFilteredProducts.slice(offset, offset + itemsPerPage);
@@ -81,7 +101,6 @@ const LandingProducts = () => {
           Products
         </h2>
 
-        {/* Dropdown */}
         <div className="relative inline-block text-left">
           <button
             onClick={toggleDropdown}
@@ -90,9 +109,8 @@ const LandingProducts = () => {
           >
             {selected}
             <svg
-              className={`w-2.5 h-2.5 ms-3 transition-transform ${
-                isOpen ? "rotate-180" : "rotate-0"
-              }`}
+              className={`w-2.5 h-2.5 ms-3 transition-transform ${isOpen ? "rotate-180" : "rotate-0"
+                }`}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 10 6"
@@ -110,24 +128,17 @@ const LandingProducts = () => {
           {isOpen && (
             <div className="absolute z-10 mt-2 w-48 bg-white rounded-lg shadow-sm">
               <ul className="p-3 space-y-3 text-sm text-gray-700">
-                {[
-                  "All Categories",
-                  "Electronics",
-                  "Fashion",
-                  "Home Appliances",
-                  "Books",
-                  "Beauty & Health",
-                ].map((option, index) => (
-                  <li key={index}>
+                {categories.map((option,i) => (
+                  <li key={i}>
                     <label className="flex items-center cursor-pointer">
                       <input
                         type="radio"
-                        checked={selected === option}
-                        onChange={() => handleSelect(option)}
+                        checked={selected === option.name}
+                        onChange={() => handleSelect(option.name)}
                         name="category"
                         className="mr-2"
                       />
-                      {option}
+                      {option.name}
                     </label>
                   </li>
                 ))}
@@ -188,7 +199,6 @@ const LandingProducts = () => {
           </div>
         )}
 
-        {/* Pagination */}
         {pageCount > 1 && (
           <div className="flex justify-center mt-10">
             <ReactPaginate

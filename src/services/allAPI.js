@@ -22,17 +22,6 @@ export const updateUserApi = async (reqBody) => {
 export const deleteProfileApi = async (id) => {
   return await commonAPI("DELETE", `${SERVER_URL}/user/deleteUser`,id, {}, "include");
 };
-
-// ✅ Update user status (Admin)
-export const updateUserStatusAPI = async (userId, status) => {
-  return await commonAPI(
-    "PUT",
-    `${SERVER_URL}/users/admin/${userId}/status`,
-    { status },
-    true
-  );
-};
-
 //----------------------------------------PRODUCTS----------------------------------------
 //getAllProducts
 export const getAllProductAPI = async () => {
@@ -71,25 +60,25 @@ export const getCartAPI = async () => {
 );
 };
 
-// Update Cart Item Quantity (inc / dec)
+// UpdateCartItemQuantity
 export const updateCartItemAPI = async (productId, action) => {
   return await commonAPI("PUT",`${SERVER_URL}/user/cart/update/${productId}`,{ action },true
 );
 };
 
-// Remove a single item
+// RemoveSingleItem
 export const removeCartItemAPI = async (productId) => {
   return await commonAPI("DELETE",`${SERVER_URL}/user/cart/remove/${productId}`,{},true
 );
 };
 
-// Clear entire cart
+// ClearEntireCart
 export const clearCartAPI = async () => {
   return await commonAPI("DELETE",`${SERVER_URL}/user/cart/clear`,{},true
 );
 };
 
-// Checkout cart
+// CheckoutCart
 export const checkoutCartAPI = async (data) => {
   return await commonAPI("POST",`${SERVER_URL}/user/cart/checkout`,data,true
 );
@@ -99,43 +88,42 @@ export const getCartItemsAPI = () => commonAPI("GET", `${SERVER_URL}/user/cart`)
 
 
 //----------------------------------------ORDER----------------------------------------
-// Create Order from Cart
+// CreateOrderfromCart
 export const createOrderAPI = async (payload) => {
   return await commonAPI("POST",`${SERVER_URL}/orders/create`,payload,true
   );
 };
 
-// Get Logged-in User Orders
+// GetUserOrders
 export const getUserOrdersAPI = async () => {
   return await commonAPI("GET",`${SERVER_URL}/orders/my-orders`,{},true
   );
 };
 
-// Cancel Order
+// CancelOrder
 export const cancelOrderAPI = async (orderId) => {
-  return await commonAPI("PUT",`${SERVER_URL}/orders/cancel/${orderId}`,{},true
-  );
+  return await commonAPI("PUT",`${SERVER_URL}/orders/cancel/${orderId}`,{},true);
 };
 
-// Get Single Order Details
+// GetSingleOrder Details
 export const getOrderDetailsAPI = async (orderId) => {
-  return await commonAPI("GET",`${SERVER_URL}/orders/details/${orderId}`,{},true
-  );
+  return await commonAPI("GET",`${SERVER_URL}/orders/details/${orderId}`,{},true);
 };
 
-// Admin: Get All Orders (from all users)
+
+//Get all orders (Admin)
 export const adminGetAllOrdersAPI = async () => {
-  return await commonAPI("GET",`${SERVER_URL}/orders/admin/all`,{},true
-  );
+  return await commonAPI("GET", `${SERVER_URL}/orders/admin/all`, "", true);
 };
-// ✅ Update Order Status (Admin)
-export const updateOrderStatusAPI = async (orderId, status) => {
-  return await commonAPI("PUT",`${SERVER_URL}/orders/admin/status/${orderId}`,{ status },true
-  );
-};
+
+//Get single order by ID (Admin)
 export const adminGetOrderByIdAPI = async (orderId) => {
-  return await commonAPI("GET", `${SERVER_URL}/orders/admin/${orderId}`, {}, true
-  );
+  return await commonAPI("GET", `${SERVER_URL}/orders/admin/${orderId}`, "", true);
+};
+
+//Update order status (Admin)
+export const updateOrderStatusAPI = async (orderId, status) => {
+  return await commonAPI("PUT",`${SERVER_URL}/orders/admin/status/${orderId}`,{ status },true);
 };
 
 //----------------------------------------ADMIN----------------------------------------
@@ -144,23 +132,26 @@ export const getAllUsersAPI = async ()=>{
   return await commonAPI("GET",`${SERVER_URL}/admin/allUsers`)
 }
 
-export const editProductAPI = async (id, reqBody) => {
-  return await commonAPI(
-    "put",`${SERVER_URL}/adminOnly/edit-Product/${id}`, // ✅ URL
-    reqBody, 
-       { "Content-Type": "multipart/form-data"}
-  );
+export const editProductAPI = async (id, formData) => {
+  return await commonAPI("PUT",`${SERVER_URL}/adminOnly/edit-Product/${id}`,formData,{ "Content-Type": "multipart/form-data"});
 };
 
 export const addProductAPi = async (formData) => {
-  return await commonAPI("POST", `${SERVER_URL}/adminOnly/add-Product`, formData, {
-    "Content-Type": "multipart/form-data",
-  });
+  return await commonAPI("POST", `${SERVER_URL}/adminOnly/add-Product`, formData, {"Content-Type": "multipart/form-data",});
+};
+
+//Update user status
+export const updateUserStatusAPI = async (userId,status) => {
+  return await commonAPI("PATCH",`${SERVER_URL}/admin/users/${userId}/status`,{ status });
 };
 //----------------------------------------Category----------------------------------------
 //getAllCategory
 export const getAllCategoryApi = async()=>{
   return await commonAPI("GET",`${SERVER_URL}/admin/category/all`)
+}
+//getAllCategoryPublic
+export const getAllCategoryPublic = async()=>{
+  return await commonAPI("GET",`${SERVER_URL}/admin/category/public/all`)
 }
 //addCategory
 export const addCategoryAPi = async(reqBody)=>{

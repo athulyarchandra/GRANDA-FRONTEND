@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getOrderDetailsAPI, cancelOrderAPI } from "../services/allAPI";
-import AllOrdersByUser from "./AllOrdersByUser";
 
 const OrderDetails = () => {
   const { orderId } = useParams();
@@ -30,12 +29,14 @@ const OrderDetails = () => {
   const handleCancelOrder = async () => {
     if (!window.confirm("Cancel this order?")) return;
     try {
-      const res = await cancelOrderAPI(orderId);
+      const res = await cancelOrderAPI(orderId);      
       if (res.status === 200) {
         alert("Order cancelled successfully");
-        fetchOrderDetails(); 
+        setOrder(null); 
+       
       }
     } catch (err) {
+      console.log("4");
       console.log(err);
     }
   };

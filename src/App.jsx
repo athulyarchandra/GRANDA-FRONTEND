@@ -15,18 +15,17 @@ import Categories from "./components/Categories";
 import User from "./components/User";
 import AllOrdersByUser from "./components/AllOrdersByUser";
 import Pnf from "./pages/Pnf";
-import { getCartItemsAPI } from "./services/allAPI"; // ✅ import
+import { getCartItemsAPI } from "./services/allAPI";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import AuthContextApi from "./context/AuthContexApi";
 import OrderDetByAdmin from "./components/OrderDetByAdmin";
+import AdminAllOrders from "./components/AdminAllOrders";
 
 const Landing = lazy(() => import("./pages/Landing"));
 
 function App() {
   const [cartCount, setCartCount] = useState(0);
 
-  // ✅ Function to fetch and set cart count
   const fetchCartCount = async () => {
     try {
       const res = await getCartItemsAPI();
@@ -37,12 +36,9 @@ function App() {
       console.error("Error fetching cart count:", err);
     }
   };
-
-  // ✅ Run once on load
   useEffect(() => {
     fetchCartCount();
 
-    // ✅ Listen for manual cart updates
     const handleCartUpdated = () => fetchCartCount();
     window.addEventListener("cartUpdated", handleCartUpdated);
 
@@ -51,35 +47,36 @@ function App() {
 
   return (
     <CartContext.Provider value={{ cartCount, setCartCount }}>
-        <Navbar />
-        <Suspense
-          fallback={
-            <div className="flex justify-center items-center h-screen">
-              <img src={fallbackLoad} alt="Page loading..." className="w-60 h-60 animate-pulse" />
-            </div>
-          }
-        >
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/register" element={<Auth insideRegister={true} />} />
-            <Route path="/login" element={<Auth />} />
-            <Route path="/user/singleProduct/:id" element={<ProductDetails />} />
-            <Route path="/user/cart" element={<UserCart />} />
-            <Route path="/orders/details/:orderId" element={<OrderDetails />} />
-            <Route path="/orders/my-orders" element={<AllOrdersByUser />} />
-            <Route path="/user" element={<User />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/adminPortal" element={<AdminPortal />}>
-              <Route path="dashboard" element={<AddProducts isAdminAddPrdt={false} />} />
-              <Route path="users" element={<AllUsers />} />
-              <Route path="orders" element={<OrderDetByAdmin />} />
-              <Route path="categories" element={<Categories />} />
-            </Route>
-            <Route path="/*" element={<Pnf />} />
-          </Routes>
-        </Suspense>
-        <Footer />
+      <Navbar />
+      <Suspense
+        fallback={
+          <div className="flex justify-center items-center h-screen">
+            <img src={fallbackLoad} alt="Page loading..." className="w-60 h-60 animate-pulse" />
+          </div>
+        }
+      >
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/register" element={<Auth insideRegister={true} />} />
+          <Route path="/login" element={<Auth />} />
+          <Route path="/user/singleProduct/:id" element={<ProductDetails />} />
+          <Route path="/user/cart" element={<UserCart />} />
+          <Route path="/orders/details/:orderId" element={<OrderDetails />} />
+          <Route path="/orders/my-orders" element={<AllOrdersByUser />} />
+          <Route path="/user" element={<User />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/adminPortal" element={<AdminPortal />}>
+            <Route path="dashboard" element={<AddProducts isAdminAddPrdt={false} />} />
+            <Route path="users" element={<AllUsers />} />
+            <Route path="categories" element={<Categories />} />
+            <Route path="orders" element={<AdminAllOrders />} />
+            <Route path="order/:orderId" element={<OrderDetByAdmin />} />
+          </Route>
+          <Route path="/*" element={<Pnf />} />
+        </Routes>
+      </Suspense>
+      <Footer />
     </CartContext.Provider>
   );
 }

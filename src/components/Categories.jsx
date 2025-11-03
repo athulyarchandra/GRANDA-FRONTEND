@@ -109,7 +109,7 @@ const Categories = () => {
                                     <td className="p-4 text-[13px] leading-tight">{category.description}</td>
                                     <td className="p-4 text-[13px] leading-tight">
                                         <button
-                                            className="text-blue-600"
+                                            className="text-blue-600 cursor-pointer"
                                             onClick={() => setEditCategory(category)}
                                         >
                                             Edit
@@ -117,7 +117,7 @@ const Categories = () => {
                                     </td>
                                     <td className="p-4 text-[13px] leading-tight">
                                         <button
-                                            className="text-red-600"
+                                            className="text-red-600" cursor-pointer
                                             onClick={() => handleDeleteModalOpen(category)}
                                         >
                                             Delete

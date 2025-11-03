@@ -12,14 +12,17 @@ const AuthContextApi = ({ children }) => {
   );
 
   const login = async (userData) => {
-
     try {
       const response = await loginUser(userData);
       console.log("Login Response:", response);
 
       if (response.status === 200) {
-
         const loggedUser = response.data.user;
+
+        if (loggedUser.status === "Inactive") {
+          alert("Your account is deactivated. Please contact admin.");
+          return { success: false, message: "Account inactive" };
+        }
 
         setIsLoggedIn(true);
         setUser(loggedUser);
@@ -30,18 +33,17 @@ const AuthContextApi = ({ children }) => {
         return { success: true, user: loggedUser };
       } else {
         if (response.status === 401 || response.status === 400) {
-          alert(response.data)
-
+          alert(response.data);
         }
 
         return { success: false, message: "Invalid credentials" };
       }
     } catch (error) {
-
       console.log("Login error:", error);
-      return { success: false, message: response?.data || "Login failed" };
+      return { success: false, message: "Login failed" };
     }
   };
+
   const logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("isLoggedIn");
@@ -50,13 +52,11 @@ const AuthContextApi = ({ children }) => {
     setUser(null);
   };
 
-
-
   return (
     <userContext.Provider value={{ isLoggedIn, user, login, logout }}>
       {children}
     </userContext.Provider>
   );
-}
+};
 
 export default AuthContextApi;

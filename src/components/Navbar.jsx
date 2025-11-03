@@ -15,15 +15,20 @@ const Navbar = () => {
     navigate("/login");
     setMenuOpen(false);
   };
+    const user = JSON.parse(localStorage.getItem("user"));
+    const goBack = () => {
+    navigate(-1); 
+  };
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
     <nav className="flex flex-wrap items-center justify-between px-3 py-2 bg-[#e8e8e5] relative">
       {/* Logo */}
-      <div className="text-xl font-semibold">GRANDA</div>
-
-      {/* Hamburger Icon (mobile only) */}
+      <div className="flex justify-evenly items-center">
+       <Link to={'/'}> <div className="text-xl font-semibold">GRANDA</div></Link>
+        <button className="flex items-center justify-center h-10 w-full md:w-auto rounded-md bg-[#c8a876] text-white font-medium p-2 my-1 md:my-0 mx-2" onClick={goBack}><i className="fa-solid fa-arrow-left mx-1"></i>Go Back</button>
+      </div>
       <button
         className="md:hidden text-2xl focus:outline-none"
         onClick={toggleMenu}
@@ -31,7 +36,6 @@ const Navbar = () => {
         <i className={`fa-solid ${menuOpen ? "fa-xmark" : "fa-bars"}`}></i>
       </button>
 
-      {/* Navigation Menu */}
       <div
         className={`${
           menuOpen ? "block" : "hidden"
@@ -86,13 +90,22 @@ const Navbar = () => {
               >
                 <i className="fa-solid fa-user"></i>
               </Link>
-
+              {user.email==="admin@gmail.com" &&
+                <Link
+                to="/adminPortal/dashboard"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center justify-center h-10 w-full md:w-auto rounded-md bg-[#c8a876] text-white font-medium p-2 my-1 md:my-0"
+              >
+                Admin
+              </Link>
+              }
               <button
                 onClick={handleLogout}
                 className="flex items-center justify-center h-10 w-full md:w-auto rounded-md bg-[#c8a876] text-white font-medium p-2 my-1 md:my-0"
               >
                 <i className="fa-solid fa-right-from-bracket"></i>
               </button>
+              
             </>
           ) : (
             <Link

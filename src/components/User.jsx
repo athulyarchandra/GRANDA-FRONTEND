@@ -10,15 +10,7 @@ import { useNavigate } from "react-router-dom";
 import SERVER_URL from "../services/serverUrl";
 
 const User = () => {
-    const [userDetails, setUserDetails] = useState({
-        username: "",
-        email: "",
-        bio: "",
-        age: "",
-        gender: "",
-        address: "",
-        profilePic: "",
-    });
+    const [userDetails, setUserDetails] = useState({username: "",email: "",bio: "",age: "",gender: "",address: "",profilePic: "",});
 
     const [file, setFile] = useState(null);
     const [preview, setPreview] = useState("");
@@ -95,6 +87,7 @@ const User = () => {
                 setUserDetails(response.data.user);
                 setPreview(`${SERVER_URL}/uploads/${response.data.user.profilePic}`);
                 setFile(null);
+                getUser()
             }
         } catch (err) {
             console.log(err);
@@ -197,7 +190,6 @@ const User = () => {
                             Delete Profile
                         </button>
 
-                        {/* Delete Confirm Modal */}
                         {showDeleteModal && (
                             <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
                                 <div className="bg-white rounded-lg p-6 text-center w-[420px] shadow-lg">
@@ -231,111 +223,26 @@ const User = () => {
                                 <h2 className="font-bold text-center mb-4">Edit Profile</h2>
 
                                 <div className="flex flex-col gap-3">
-                                    <input
-                                        name="username"
-                                        value={userDetails.username || ""}
-                                        onChange={(e) =>
-                                            setUserDetails({
-                                                ...userDetails,
-                                                [e.target.name]: e.target.value,
-                                            })
-                                        }
-                                        placeholder="Username"
-                                        className="p-2 border rounded-md"
-                                    />
+                                    <input name="username" value={userDetails.username || ""} onChange={(e) =>setUserDetails({...userDetails,[e.target.name]: e.target.value,})} placeholder="Username" className="p-2 border rounded-md"/>
 
-                                    <input
-                                        name="bio"
-                                        value={userDetails.bio || ""}
-                                        onChange={(e) =>
-                                            setUserDetails({
-                                                ...userDetails,
-                                                [e.target.name]: e.target.value,
-                                            })
-                                        }
-                                        placeholder="Bio"
-                                        className="p-2 border rounded-md"
-                                    />
+                                    <input name="bio" value={userDetails.bio || ""} onChange={(e) =>setUserDetails({...userDetails,[e.target.name]: e.target.value,})}placeholder="Bio" className="p-2 border rounded-md"/>
 
-                                    <input
-                                        type="number"
-                                        name="age"
-                                        value={userDetails.age || ""}
-                                        onChange={(e) =>
-                                            setUserDetails({
-                                                ...userDetails,
-                                                [e.target.name]: e.target.value,
-                                            })
-                                        }
-                                        placeholder="Age"
-                                        className="p-2 border rounded-md"
-                                    />
+                                    <input type="number" name="age" value={userDetails.age || ""} onChange={(e) =>setUserDetails({...userDetails,[e.target.name]: e.target.value,})} placeholder="Age" className="p-2 border rounded-md"/>
 
-                                    <input
-                                        name="gender"
-                                        value={userDetails.gender || ""}
-                                        onChange={(e) =>
-                                            setUserDetails({
-                                                ...userDetails,
-                                                [e.target.name]: e.target.value,
-                                            })
-                                        }
-                                        placeholder="Gender"
-                                        className="p-2 border rounded-md"
-                                    />
+                                    <input name="gender" value={userDetails.gender || ""} onChange={(e) =>setUserDetails({...userDetails,[e.target.name]: e.target.value,})} placeholder="Gender" className="p-2 border rounded-md"/>
 
-                                    <input
-                                        name="address"
-                                        value={userDetails.address || ""}
-                                        onChange={(e) =>
-                                            setUserDetails({
-                                                ...userDetails,
-                                                [e.target.name]: e.target.value,
-                                            })
-                                        }
-                                        placeholder="Address"
-                                        className="p-2 border rounded-md"
-                                    />
+                                    <input name="address" value={userDetails.address || ""} onChange={(e) =>setUserDetails({...userDetails,[e.target.name]: e.target.value,})} placeholder="Address" className="p-2 border rounded-md"/>
 
-                                    <input
-                                        name="email"
-                                        value={userDetails.email || ""}
-                                        onChange={(e) =>
-                                            setUserDetails({
-                                                ...userDetails,
-                                                [e.target.name]: e.target.value,
-                                            })
-                                        }
-                                        placeholder="Email"
-                                        className="p-2 border rounded-md"
-                                    />
-
-                                    <input
-                                        type="file"
-                                        onChange={(e) => {
-                                            setFile(e.target.files[0]);
-                                        }}
-                                    />
+                                    <input name="email" value={userDetails.email || ""} onChange={(e) =>setUserDetails({...userDetails,[e.target.name]: e.target.value,})} placeholder="Email" className="p-2 border rounded-md"/>
                                 </div>
 
                                 <div className="flex gap-4 justify-center mt-4">
-                                    <button
-                                        type="submit"
-                                        className="bg-green-600 text-white px-4 py-2 rounded-md"
-                                    >
-                                        Save
+                                    <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded-md"
+                                    > Save
                                     </button>
 
-                                    <button
-                                        onClick={() => {
-                                            setEditing(false);
-                                            setFile(null);
-                                            setPreview("");
-                                        }}
-                                        type="button"
-                                        className="bg-red-600 text-white px-4 py-2 rounded-md"
-                                    >
-                                        Cancel
+                                    <button onClick={() => {     setEditing(false);     setFile(null);     setPreview(""); }} type="button" className="bg-red-600 text-white px-4 py-2 rounded-md"
+                                    > Cancel
                                     </button>
                                 </div>
                             </form>

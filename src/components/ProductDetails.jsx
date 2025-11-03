@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { addToCartAPI, getSingleProductByUser } from "../services/allAPI";
 import SERVER_URL from "../services/serverUrl";
-import { CartContext } from "../context/CartContext"; // ✅ import context
+import { CartContext } from "../context/CartContext"; 
 
 const ProductDetails = () => {
   const [qty, setQty] = useState(1);
@@ -10,7 +10,7 @@ const ProductDetails = () => {
   const [detailsOpen,setDetailsOpen] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0);
   const { id } = useParams();
-  const { setCartCount } = useContext(CartContext); // ✅ access setCartCount
+  const { setCartCount } = useContext(CartContext);
   const navigate = useNavigate()
   useEffect(() => {
     getProdutDetails();
@@ -31,10 +31,8 @@ const handleAddToCart = async () => {
     if (response.status === 200 || response.status === 201) {
       console.log("Add to cart response:", response.data);
 
-      // ✅ Increment count safely
       setCartCount((prev) => prev + qty);
 
-      // ✅ Trigger global update (Navbar + App)
       window.dispatchEvent(new Event("cartUpdated"));
 
       alert("Item added to cart successfully!");

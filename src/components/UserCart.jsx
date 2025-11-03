@@ -6,7 +6,7 @@ import {
   removeCartItemAPI,
   createOrderAPI,
 } from "../services/allAPI";
-import { CartContext } from "../context/CartContext"; // ✅ import
+import { CartContext } from "../context/CartContext"; 
 
 const UserCart = () => {
   const [cartData, setCartData] = useState(null);
@@ -16,7 +16,7 @@ const UserCart = () => {
   const [paymentMethod, setPaymentMethod] = useState("Cash on Delivery");
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const navigate = useNavigate();
-  const { setCartCount } = useContext(CartContext); // ✅ use context
+  const { setCartCount } = useContext(CartContext); 
 
   useEffect(() => {
     fetchCart();
@@ -28,14 +28,14 @@ const UserCart = () => {
       const res = await getCartAPI();
       setCartData(res.data);
 
-      // ✅ update global count
+      //  update global count
       const totalQty =
         res?.data?.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
       setCartCount(totalQty);
     } catch (err) {
       console.error("getCart error:", err);
       setCartData({ items: [], grandTotal: 0 });
-      setCartCount(0); // clear cart count
+      setCartCount(0); 
     } finally {
       setLoading(false);
     }
@@ -49,7 +49,6 @@ const UserCart = () => {
       if (res?.data?.cart) {
         setCartData(res.data.cart);
 
-        // ✅ also update global count
         const totalQty =
           res?.data?.cart?.items?.reduce((sum, item) => sum + item.quantity, 0) ||
           0;
@@ -70,7 +69,7 @@ const UserCart = () => {
       if (res?.data?.cart) {
         setCartData(res.data.cart);
 
-        // ✅ recompute total count
+        //  recompute total count
         const totalQty =
           res?.data?.cart?.items?.reduce((sum, item) => sum + item.quantity, 0) ||
           0;
@@ -79,7 +78,6 @@ const UserCart = () => {
         await fetchCart();
       }
 
-      // ✅ Notify app globally (so Navbar updates if user is on another page)
       window.dispatchEvent(new Event("cartUpdated"));
     } catch (err) {
       console.error("remove item error:", err);
@@ -109,7 +107,6 @@ const UserCart = () => {
         setShowCheckout(false);
         alert("Order placed successfully!");
 
-        // ✅ cart cleared, so reset global count
         setCartCount(0);
         window.dispatchEvent(new Event("cartUpdated"));
 
@@ -251,6 +248,7 @@ const UserCart = () => {
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white rounded-md w-[420px] p-6">
             <h3 className="text-lg font-semibold mb-3">Checkout</h3>
+            <p className=""><span className="text-red-600"><i className="fa-solid fa-exclamation"></i></span>After Placing order you can't edit anything</p>
 
             <label className="block text-sm text-gray-600">Shipping Address</label>
             <textarea

@@ -1,11 +1,9 @@
-import React from 'react'
 import hinmg from '../assets/h2.jpg'
 const Header = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     const userName = user?.username;
 
     return (
-
         <>
             <div className="relative w-full h-[320px]" id="home">
                 <div className="absolute inset-0 opacity-80">
@@ -14,8 +12,8 @@ const Header = () => {
                 </div>
                 <div className="absolute inset-9 flex flex-col md:flex-row items-center justify-between">
                     <div className="md:w-1/2 mb-4 md:mb-0">
-                        <h1 className="text-grey-700 sm:text-center font-medium text-4xl md:text-5xl leading-tight mb-2">GRANDA</h1>
-                        <p className="font-regular text-xl sm:text-center mb-8 mt-4">From essentials to favorites</p>
+                        <h1 style={{ fontFamily:'"Merriweather", serif'}} className="text-grey-700 sm:text-center font-medium text-4xl md:text-5xl text-left leading-tight mb-2">GRANDA</h1>
+                        <p  style={{ fontFamily:'"Merriweather", serif'}} className="font-regular rounded-[20px] text-xl bg-white sm:text-center mb-8 mt-4 mx-0">From essentials to favorites</p>
                         {
                             user ?
                                 <a style={{ fontFamily: `"Roboto Serif", serif` }}

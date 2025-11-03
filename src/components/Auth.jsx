@@ -3,7 +3,6 @@ import { loginUser, registerUser } from '../services/allAPI';
 import { useNavigate } from 'react-router-dom';
 import { userContext } from '../context/AuthContexApi';
 const Auth = ({ insideRegister }) => {
-    const [showError, setShowError] = useState("")
     const [inputData, setInputData] = useState({
         username: "", email: "", password: ""
     })
