@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Simple Parallax with Tailwind CSS</title>
+  <!-- Tailwind CDN - for quick demo only -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Minor utility to ensure parallax layers are positioned correctly */
+    .parallax-layer {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background-position: center;
+      background-size: cover;
+      will-change: transform;
+      transform: translateZ(0);
+      pointer-events: none; /* doesn't block text selection */
+    }
+    /* container to keep relative positioning for layers */
+    .parallax-container {
+      position: relative;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800 leading-relaxed">
+
+  <!-- Hero with parallax background -->
+  <section class="parallax-container h-screen flex items-center justify-center">
+    <!-- Background layer (image) -->
+    <div class="parallax-layer" id="bg-hero" style="background-image: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1920&auto=format&fit=crop');"></div>
+
+    <!-- Foreground content -->
+    <div class="relative z-10 text-center px-6">
+      <h1 class="text-4xl md:text-6xl font-extrabold text-white drop-shadow-lg">Simple Parallax</h1>
+      <p class="mt-4 text-lg md:text-xl text-white/90 max-w-2xl mx-auto">A minimal, dependency-free parallax demo using Tailwind CSS and a tiny bit of vanilla JS.</p>
+      <a href="#content" class="inline-block mt-6 bg-white text-gray-900 px-4 py-2 rounded shadow hover:scale-105 transition">Scroll down</a>
+    </div>
+
+  </section>
+
+  <!-- Content section to demonstrate depth -->
+  <main id="content" class="space-y-16 py-20">
+    <section class="max-w-4xl mx-auto bg-white rounded-xl p-8 shadow">
+      <h2 class="text-2xl font-semibold mb-3">How this works</h2>
+      <p>We use a fixed-height container (the hero) with an absolutely-positioned background layer. On scroll we move the background layer vertically at a different speed than the page scroll to create the parallax illusion.</p>
+    </section>
+
+    <section class="max-w-4xl mx-auto bg-white rounded-xl p-8 shadow">
+      <h2 class="text-2xl font-semibold mb-3">Usage notes</h2>
+      <ul class="list-disc list-inside space-y-2">
+        <li>Works well on desktop. Mobile browsers may behave differently; adjust or disable for small screens if necessary.</li>
+        <li>Use high-resolution images and optimize them for production.</li>
+        <li>You can add multiple layers for stronger depth (foreground, midground, background) and give them different speeds.</li>
+      </ul>
+    </section>
+
+    <section class="max-w-4xl mx-auto bg-white rounded-xl p-8 shadow">
+      <h2 class="text-2xl font-semibold mb-3">Example content</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates, quas.</p>
+    </section>
+  </main>
+
+  <!-- Small script: reads scroll and applies translateY to the background layer -->
+  <script>
+    (function () {
+      const bg = document.getElementById('bg-hero');
+      // tune this value to change the parallax strength (0 = no movement, 1 = same speed as scroll)
+      const speed = 0.5;
+
+      // Simple throttled scroll handler using requestAnimationFrame
+      let latestKnownScrollY = 0;
+      let ticking = false;
+
+      function onScroll() {
+        latestKnownScrollY = window.scrollY;
+        requestTick();
+      }
+
+      function requestTick() {
+        if (!ticking) {
+          requestAnimationFrame(update);
+        }
+        ticking = true;
+      }
+
+      function update() {
+        const scrolled = latestKnownScrollY;
+        // calculate translate for the background layer
+        const translateY = Math.round(scrolled * speed);
+        bg.style.transform = `translate3d(0, ${translateY}px, 0)`;
+        ticking = false;
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      // disable parallax on very small widths (optional)
+      function handleResize() {
+        if (window.innerWidth < 640) {
+          bg.style.transform = 'none';
+          window.removeEventListener('scroll', onScroll);
+        } else {
+          window.addEventListener('scroll', onScroll, { passive: true });
+        }
+      }
+
+      window.addEventListener('resize', handleResize);
+      // initial call
+      handleResize();
+    })();
+  </script>
+
+</body>
+</html>

@@ -20,6 +20,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import OrderDetByAdmin from "./components/OrderDetByAdmin";
 import AdminAllOrders from "./components/AdminAllOrders";
+import New from "./components/New";
 
 const Landing = lazy(() => import("./pages/Landing"));
 
@@ -57,6 +58,9 @@ function App() {
       >
         <Routes>
           <Route path="/" element={<Landing />} />
+          <Route path="/new" element={<New />} />
+
+
           <Route path="/register" element={<Auth insideRegister={true} />} />
           <Route path="/login" element={<Auth />} />
           <Route path="/user/singleProduct/:id" element={<ProductDetails />} />

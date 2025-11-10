@@ -10,32 +10,32 @@ const Auth = ({ insideRegister }) => {
     const { login } = useContext(userContext)
     const navigate = useNavigate()
     //register
-const handleRegister = async (e) => {
-  e.preventDefault();
+    const handleRegister = async (e) => {
+        e.preventDefault();
 
-  if (inputData.username && inputData.email && inputData.password) {
-    try {
-      const result = await registerUser(inputData);
-      console.log(result);
+        if (inputData.username && inputData.email && inputData.password) {
+            try {
+                const result = await registerUser(inputData);
+                console.log(result);
 
-      if (result.status === 201) {
-        alert(`Welcome ${result.data.user?.username}, Please Login`);
-        setInputData({ username: "", email: "", password: "" });
-        setTimeout(() => navigate('/login'), 1300);
-      } 
-      else if (result.status === 409) {
-        alert(result.data.message);
-        setInputData({ username: "", email: "", password: "" });
-      }
+                if (result.status === 201) {
+                    alert(`Welcome ${result.data.user?.username}, Please Login`);
+                    setInputData({ username: "", email: "", password: "" });
+                    setTimeout(() => navigate('/login'), 1300);
+                }
+                else if (result.status === 409) {
+                    alert(result.data.message);
+                    setInputData({ username: "", email: "", password: "" });
+                }
 
-    } catch (err) {
-      console.log(err);
-      alert("Something went wrong. Please try again.");
-    }
-  } else {
-    alert("Provide all details");
-  }
-};
+            } catch (err) {
+                console.log(err);
+                alert("Something went wrong. Please try again.");
+            }
+        } else {
+            alert("Provide all details");
+        }
+    };
 
     const handleLogin = async (e) => {
         e.preventDefault();
