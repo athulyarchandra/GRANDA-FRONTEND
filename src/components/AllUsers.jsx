@@ -95,7 +95,7 @@ const AllUsers = () => {
                     <td className="p-4">
                       <div className="flex items-center gap-3">
                         <img
-                          src={`${SERVER_URL}/${user.profilePic}`}
+                          src={`${SERVER_URL}/uploads/${user.profilePic}`}
                           alt="Profile"
                           className="w-14 h-14 rounded-full shadow"
                         />

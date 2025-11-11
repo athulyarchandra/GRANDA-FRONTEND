@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
 import granda from "../assets/GRANDA.png";
 import uploadImg from "../assets/uploadImg.png";
-import {
-    deleteProfileApi,
-    getUserProfileAPI,
-    updateUserApi,
-} from "../services/allAPI";
+import { deleteProfileApi, getUserProfileAPI, updateUserApi, } from "../services/allAPI";
 import { useNavigate } from "react-router-dom";
 import SERVER_URL from "../services/serverUrl";
 
 const User = () => {
-    const [userDetails, setUserDetails] = useState({username: "",email: "",bio: "",age: "",gender: "",address: "",profilePic: "",});
+    const [userDetails, setUserDetails] = useState({ username: "", email: "", bio: "", age: "", gender: "", address: "", profilePic: "", });
 
     const [file, setFile] = useState(null);
     const [preview, setPreview] = useState("");
@@ -35,9 +31,9 @@ const User = () => {
         setShowDeleteModal(true);
     };
 
-    const handleDeleteProfile = async () => {
+    const handleDeleteProfile = async (id) => {
         try {
-            const response = await deleteProfileApi();
+            const response = await deleteProfileApi(id);
             if (response.status === 200) {
                 alert("Profile deleted successfully!");
                 navigate("/");
@@ -191,7 +187,7 @@ const User = () => {
                         </button>
 
                         {showDeleteModal && (
-                            <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+                            <div className="fixed inset-0 bg-black/50 bg-opacity-40 flex justify-center items-center z-50">
                                 <div className="bg-white rounded-lg p-6 text-center w-[420px] shadow-lg">
                                     <h3 className="text-lg font-semibold text-gray-700 mb-4">
                                         Are you sure you want to delete this Profile?
@@ -204,7 +200,7 @@ const User = () => {
                                             Cancel
                                         </button>
                                         <button
-                                            onClick={handleDeleteProfile}
+                                            onClick={() => handleDeleteProfile(userDetails._id)}
                                             className="bg-red-600 text-white px-5 py-2 rounded hover:bg-red-700"
                                         >
                                             Yes, Delete
@@ -222,31 +218,121 @@ const User = () => {
                             >
                                 <h2 className="font-bold text-center mb-4">Edit Profile</h2>
 
-                                <div className="flex flex-col gap-3">
-                                    <input name="username" value={userDetails.username || ""} onChange={(e) =>setUserDetails({...userDetails,[e.target.name]: e.target.value,})} placeholder="Username" className="p-2 border rounded-md"/>
+                                {/* Profile Image Upload Section */}
+                                <div className="flex flex-col items-center gap-4 mb-4">
+                                    <div className="w-32 h-32 rounded-md overflow-hidden border">
+                                        <img
+                                            src={
+                                                preview
+                                                    ? preview
+                                                    : existingProfileImg
+                                                        ? `${SERVER_URL}/uploads/${existingProfileImg}`
+                                                        : uploadImg
+                                            }
+                                            alt="Profile Preview"
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
 
-                                    <input name="bio" value={userDetails.bio || ""} onChange={(e) =>setUserDetails({...userDetails,[e.target.name]: e.target.value,})}placeholder="Bio" className="p-2 border rounded-md"/>
-
-                                    <input type="number" name="age" value={userDetails.age || ""} onChange={(e) =>setUserDetails({...userDetails,[e.target.name]: e.target.value,})} placeholder="Age" className="p-2 border rounded-md"/>
-
-                                    <input name="gender" value={userDetails.gender || ""} onChange={(e) =>setUserDetails({...userDetails,[e.target.name]: e.target.value,})} placeholder="Gender" className="p-2 border rounded-md"/>
-
-                                    <input name="address" value={userDetails.address || ""} onChange={(e) =>setUserDetails({...userDetails,[e.target.name]: e.target.value,})} placeholder="Address" className="p-2 border rounded-md"/>
-
-                                    <input name="email" value={userDetails.email || ""} onChange={(e) =>setUserDetails({...userDetails,[e.target.name]: e.target.value,})} placeholder="Email" className="p-2 border rounded-md"/>
+                                    <label className="cursor-pointer bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600">
+                                        Upload Image
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            className="hidden"
+                                            onChange={(e) => setFile(e.target.files[0])}
+                                        />
+                                    </label>
                                 </div>
 
+                                {/* Text Inputs */}
+                                <div className="flex flex-col gap-3">
+                                    <input
+                                        name="username"
+                                        value={userDetails.username || ""}
+                                        onChange={(e) =>
+                                            setUserDetails({ ...userDetails, [e.target.name]: e.target.value })
+                                        }
+                                        placeholder="Username"
+                                        className="p-2 border rounded-md"
+                                    />
+
+                                    <input
+                                        name="bio"
+                                        value={userDetails.bio || ""}
+                                        onChange={(e) =>
+                                            setUserDetails({ ...userDetails, [e.target.name]: e.target.value })
+                                        }
+                                        placeholder="Bio"
+                                        className="p-2 border rounded-md"
+                                    />
+
+                                    <input
+                                        type="number"
+                                        name="age"
+                                        value={userDetails.age || ""}
+                                        onChange={(e) =>
+                                            setUserDetails({ ...userDetails, [e.target.name]: e.target.value })
+                                        }
+                                        placeholder="Age"
+                                        className="p-2 border rounded-md"
+                                    />
+
+                                    <input
+                                        name="gender"
+                                        value={userDetails.gender || ""}
+                                        onChange={(e) =>
+                                            setUserDetails({ ...userDetails, [e.target.name]: e.target.value })
+                                        }
+                                        placeholder="Gender"
+                                        className="p-2 border rounded-md"
+                                    />
+
+                                    <input
+                                        name="address"
+                                        value={userDetails.address || ""}
+                                        onChange={(e) =>
+                                            setUserDetails({ ...userDetails, [e.target.name]: e.target.value })
+                                        }
+                                        placeholder="Address"
+                                        className="p-2 border rounded-md"
+                                    />
+
+                                    <input
+                                        name="email"
+                                        value={userDetails.email || ""}
+                                        onChange={(e) =>
+                                            setUserDetails({ ...userDetails, [e.target.name]: e.target.value })
+                                        }
+                                        placeholder="Email"
+                                        className="p-2 border rounded-md"
+                                    />
+                                </div>
+
+                                {/* Action Buttons */}
                                 <div className="flex gap-4 justify-center mt-4">
-                                    <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded-md"
-                                    > Save
+                                    <button
+                                        type="submit"
+                                        className="bg-green-600 text-white px-4 py-2 rounded-md"
+                                    >
+                                        Save
                                     </button>
 
-                                    <button onClick={() => {     setEditing(false);     setFile(null);     setPreview(""); }} type="button" className="bg-red-600 text-white px-4 py-2 rounded-md"
-                                    > Cancel
+                                    <button
+                                        onClick={() => {
+                                            setEditing(false);
+                                            setFile(null);
+                                            setPreview("");
+                                        }}
+                                        type="button"
+                                        className="bg-red-600 text-white px-4 py-2 rounded-md"
+                                    >
+                                        Cancel
                                     </button>
                                 </div>
                             </form>
                         )}
+
                     </div>
                 </div>
             </section>

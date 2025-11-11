@@ -13,27 +13,27 @@ const LandingProducts = () => {
 
 
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 8; 
+  const itemsPerPage = 8;
 
   useEffect(() => {
     getAllProducts();
   }, []);
-  useEffect(()=>{
-        getAllCategory()
-  },[])
+  useEffect(() => {
+    getAllCategory()
+  }, [])
   const getAllCategory = async () => {
-     try {
+    try {
       const response = await getAllCategoryPublic();
       if (response.status === 200 && Array.isArray(response.data)) {
-        setCategories(response.data);        
-        
+        setCategories(response.data);
+
       } else {
         console.log("Failed to load categories");
       }
     } catch (err) {
       console.error("Error fetching categories:", err);
     }
-   
+
   };
 
 
@@ -45,7 +45,7 @@ const LandingProducts = () => {
         setAllHomeProducts(products);
         setAllFilteredProducts(products);
         console.log(products);
-        
+
       }
     } catch (err) {
       console.error("Error fetching products:", err);
@@ -97,65 +97,67 @@ const LandingProducts = () => {
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-7xl px-6 py-16">
-        <h2 className="text-2xl font-bold tracking-tight text-gray-900 mb-8">
-          Products
-        </h2>
+        <div className="flex items-center justify-center gap-6">
+          <div className="flex items-center justify-center gap-6 w-full px-4 mt-5 py-4">
+            {/* Category Dropdown (Left) */}
+            <div className="relative inline-block text-left">
+              <button
+                onClick={toggleDropdown}
+                className="text-white bg-[#eaa739] hover:bg-[#eba32f] font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center"
+                type="button"
+              >
+                {selected}
+                <svg
+                  className={`w-2.5 h-2.5 ms-3 transition-transform ${isOpen ? "rotate-180" : "rotate-0"
+                    }`}
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 10 6"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m1 1 4 4 4-4"
+                  />
+                </svg>
+              </button>
 
-        <div className="relative inline-block text-left">
-          <button
-            onClick={toggleDropdown}
-            className="text-white bg-[#eaa739] hover:bg-[#eba32f] font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center"
-            type="button"
-          >
-            {selected}
-            <svg
-              className={`w-2.5 h-2.5 ms-3 transition-transform ${isOpen ? "rotate-180" : "rotate-0"
-                }`}
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 10 6"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="m1 1 4 4 4-4"
-              />
-            </svg>
-          </button>
-
-          {isOpen && (
-            <div className="absolute z-10 mt-2 w-48 bg-white rounded-lg shadow-sm">
-              <ul className="p-3 space-y-3 text-sm text-gray-700">
-                {categories.map((option,i) => (
-                  <li key={i}>
-                    <label className="flex items-center cursor-pointer">
-                      <input
-                        type="radio"
-                        checked={selected === option.name}
-                        onChange={() => handleSelect(option.name)}
-                        name="category"
-                        className="mr-2"
-                      />
-                      {option.name}
-                    </label>
-                  </li>
-                ))}
-              </ul>
+              {isOpen && (
+                <div className="absolute z-10 mt-2 w-48 bg-white rounded-lg shadow-sm">
+                  <ul className="p-3 space-y-3 text-sm text-gray-700">
+                    {categories.map((option, i) => (
+                      <li key={i}>
+                        <label className="flex items-center cursor-pointer">
+                          <input
+                            type="radio"
+                            checked={selected === option.name}
+                            onChange={() => handleSelect(option.name)}
+                            name="category"
+                            className="mr-2"
+                          />
+                          {option.name}
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
-          )}
-        </div>
 
-        {/* Search Bar */}
-        <div className="relative w-full max-w-xl mx-auto my-5">
-          <input
-            placeholder="Search products..."
-            value={searchQuery}
-            onChange={handleSearch}
-            className="rounded-full w-full h-14 pl-8 pr-28 outline-none border-2 border-gray-100 shadow-md focus:ring-[#efcf97] focus:border-[#c8a871]"
-            type="text"
-          />
+            {/* Search Bar (Center) */}
+            <div className="relative w-full max-w-xl mx-auto">
+              <input
+                placeholder="Search products..."
+                value={searchQuery}
+                onChange={handleSearch}
+                className="rounded-full w-full h-14 pl-8 pr-28 outline-none border-2 border-gray-100 shadow-md focus:ring-[#efcf97] focus:border-[#c8a871]"
+                type="text"
+              />
+            </div>
+          </div>
+
         </div>
 
         {/* Products Grid */}

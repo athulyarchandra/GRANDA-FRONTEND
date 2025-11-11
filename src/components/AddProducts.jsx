@@ -140,7 +140,7 @@ const AddProducts = () => {
     if (!selectedProduct) return;
     try {
       await deleteProductAPI(selectedProduct._id);
-      alert("Product deleted");
+      alert("Product deleted successfully");
       setShowDeleteModal(false);
       getAllProducts();
     } catch (err) {

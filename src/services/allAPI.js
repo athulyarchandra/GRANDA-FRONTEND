@@ -20,7 +20,7 @@ export const updateUserApi = async (reqBody) => {
 };
 
 export const deleteProfileApi = async (id) => {
-  return await commonAPI("DELETE", `${SERVER_URL}/user/deleteUser`,id, {}, "include");
+  return await commonAPI("DELETE", `${SERVER_URL}/user/deleteUser`,id, {});
 };
 //----------------------------------------PRODUCTS----------------------------------------
 //getAllProducts
@@ -133,7 +133,7 @@ export const getAllUsersAPI = async ()=>{
 }
 
 export const editProductAPI = async (id, formData) => {
-  return await commonAPI("PUT",`${SERVER_URL}/adminOnly/edit-Product/${id}`,formData,{ "Content-Type": "multipart/form-data"});
+  return await commonAPI("PUT",`${SERVER_URL}/admin/edit-Product/${id}`,formData,{ "Content-Type": "multipart/form-data"});
 };
 
 export const addProductAPi = async (formData) => {
@@ -159,9 +159,9 @@ export const addCategoryAPi = async(reqBody)=>{
 }
 
 //updateCategory
-export const updateCategoryAPi = async(reqBody,id)=>{
-  return await commonAPI("PUT",`${SERVER_URL}/admin/category/update/${id}`,reqBody)
-}
+export const updateCategoryAPi = async (id, reqBody) => {
+  return await commonAPI("PUT", `${SERVER_URL}/admin/category/update/${id}`, reqBody);
+};
 
 //deleteCategory
 export const deleteCategoryAPi = async(id)=>{
