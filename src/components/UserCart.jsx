@@ -29,6 +29,8 @@ const UserCart = () => {
     try {
       const res = await getCartAPI();
       setCartData(res.data);
+      console.log(res.data);
+      
 
       //  update global count
       const totalQty =
