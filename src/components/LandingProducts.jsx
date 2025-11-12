@@ -175,7 +175,7 @@ const LandingProducts = () => {
                   <img
                     src={
                       product.productImages?.[0]
-                        ? `http://13.60.49.139/${product.productImages[0]}`
+                        ? `http://13.60.49.139/api/${product.productImages[0]}`
                         : "https://via.placeholder.com/300x300.png?text=No+Image"
                     }
                     alt={product.name}
