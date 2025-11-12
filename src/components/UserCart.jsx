@@ -8,6 +8,8 @@ import {
 } from "../services/allAPI";
 import { CartContext } from "../context/CartContext"; 
 
+const BACKEND_URL = "http://13.60.49.139:3000";
+
 const UserCart = () => {
   const [cartData, setCartData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -155,7 +157,7 @@ const UserCart = () => {
                     <tr className="text-center " key={index}>
                       <td className="px-2 py-2 text-left align-top">
                         <img
-                          src={item.images?.[0]}
+                          src={`http://13.60.49.139:3000/uploads/${item.images[0]}`}
                           alt="Product"
                           className="w-[70px] sm:w-[100px] h-[70px] sm:h-[100px] mr-2 inline-block rounded object-contain"
                         />
