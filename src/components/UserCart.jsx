@@ -6,7 +6,7 @@ import {
   removeCartItemAPI,
   createOrderAPI,
 } from "../services/allAPI";
-import { CartContext } from "../context/CartContext"; 
+import { CartContext } from "../context/CartContext";
 
 const BACKEND_URL = "http://13.60.49.139:3000";
 
@@ -18,7 +18,7 @@ const UserCart = () => {
   const [paymentMethod, setPaymentMethod] = useState("Cash on Delivery");
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const navigate = useNavigate();
-  const { setCartCount } = useContext(CartContext); 
+  const { setCartCount } = useContext(CartContext);
 
   useEffect(() => {
     fetchCart();
@@ -30,7 +30,7 @@ const UserCart = () => {
       const res = await getCartAPI();
       setCartData(res.data);
       console.log(res.data);
-      
+
 
       //  update global count
       const totalQty =
@@ -39,7 +39,7 @@ const UserCart = () => {
     } catch (err) {
       console.error("getCart error:", err);
       setCartData({ items: [], grandTotal: 0 });
-      setCartCount(0); 
+      setCartCount(0);
     } finally {
       setLoading(false);
     }
@@ -155,59 +155,62 @@ const UserCart = () => {
                     <td colSpan="5" className="text-center py-8">Loading...</td>
                   </tr>
                 ) : cart.length > 0 ? (
-                  cart.map((item, index) => (
-                    <tr className="text-center " key={index}>
-                      <td className="px-2 py-2 text-left align-top">
-                        <img
-                          src={item.images?.[0]}
-                          alt="Product"
-                          className="w-[70px] sm:w-[100px] h-[70px] sm:h-[100px] mr-2 inline-block rounded object-contain"
-                        />
-                        <span className="text-sm sm:text-base break-words">{item.name}</span>
-                      </td>
+                  cart.map((i) =>
+                    i.items.map((item, index) => (
+                      <tr key={index} className="text-center">
+                        <td className="px-2 py-2 text-left align-top">
+                          <img
+                            src={item.images?.[0]}
+                            alt="Product"
+                            className="w-[70px] sm:w-[100px] h-[70px] sm:h-[100px] mr-2 inline-block rounded object-contain"
+                          />
+                          <span className="text-sm sm:text-base break-words">{item.name}</span>
+                        </td>
 
-                      <td className="px-2 py-2 text-sm sm:text-base">₹{item.price}</td>
+                        <td className="px-2 py-2 text-sm sm:text-base">₹{item.price}</td>
 
-                      <td className="p-2 bg-white rounded-[170px] border border-[#a0a0a0] justify-around items-center flex mt-9 ">
-                        <svg
-                          width="14"
-                          height="15"
-                          className="cursor-pointer"
-                          onClick={() => handleQtyUpdate(item.productId, "dec")}
-                        >
-                          <path d="M2.33398 7.5H11.6673" stroke="#666" strokeWidth="1.5" strokeLinecap="round" />
-                        </svg>
-
-                        <span className="w-10 text-center text-[#191919] text-base">{item.quantity}</span>
-
-                        <svg
-                          width="14"
-                          height="15"
-                          className="cursor-pointer"
-                          onClick={() => handleQtyUpdate(item.productId, "inc")}
-                        >
-                          <path d="M2.33398 7.5H11.6673M7.00065 2.833V12.166" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" />
-                        </svg>
-                      </td>
-
-                      <td className="px-2 py-2 text-sm sm:text-base">₹{item.subtotal}</td>
-
-                      <td className="px-2 py-2">
-                        <div onClick={() => handleRemove(item.productId)} className="cursor-pointer inline-block">
-                          <svg width="24" height="25">
-                            <path d="M12 23.5C18.0748 23.5 23 18.5748 23 12.5C23 6.42525 18.0748 1.5 12 1.5C5.92525 1.5 1 6.42525 1 12.5C1 18.5748 5.92525 23.5 12 23.5Z" stroke="#CCC" />
-                            <path d="M16 8.5L8 16.5M16 16.5L8 8.5" stroke="#666" strokeWidth="1.5" />
+                        <td className="p-2 bg-white rounded-[170px] border border-[#a0a0a0] justify-around items-center flex mt-9">
+                          <svg
+                            width="14"
+                            height="15"
+                            className="cursor-pointer"
+                            onClick={() => handleQtyUpdate(item.productId, "dec")}
+                          >
+                            <path d="M2.33398 7.5H11.6673" stroke="#666" strokeWidth="1.5" strokeLinecap="round" />
                           </svg>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
+
+                          <span className="w-10 text-center text-[#191919] text-base">{item.quantity}</span>
+
+                          <svg
+                            width="14"
+                            height="15"
+                            className="cursor-pointer"
+                            onClick={() => handleQtyUpdate(item.productId, "inc")}
+                          >
+                            <path d="M2.33398 7.5H11.6673M7.00065 2.833V12.166" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" />
+                          </svg>
+                        </td>
+
+                        <td className="px-2 py-2 text-sm sm:text-base">₹{item.subtotal}</td>
+
+                        <td className="px-2 py-2">
+                          <div onClick={() => handleRemove(item.productId)} className="cursor-pointer inline-block">
+                            <svg width="24" height="25">
+                              <path d="M12 23.5C18.0748 23.5 23 18.5748 23 12.5C23 6.42525 18.0748 1.5 12 1.5C5.92525 1.5 1 6.42525 1 12.5C1 18.5748 5.92525 23.5 12 23.5Z" stroke="#CCC" />
+                              <path d="M16 8.5L8 16.5M16 16.5L8 8.5" stroke="#666" strokeWidth="1.5" />
+                            </svg>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )
                 ) : (
                   <tr>
                     <td colSpan="5" className="text-center py-4">No items in cart</td>
                   </tr>
                 )}
               </tbody>
+
 
               <tfoot>
                 <tr className="border-t border-gray-400">
